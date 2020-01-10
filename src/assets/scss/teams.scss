@@ -5,7 +5,7 @@
 .teamsContent {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: center;
 }
 
 .teamCard {
@@ -14,6 +14,7 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 50px;
+  margin-left: 20px;
 
 }
 

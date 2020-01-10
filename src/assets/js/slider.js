@@ -1,38 +1,75 @@
 
 import noneSlide from '../images/noSlideImage.jpg';
 
-const dataSlides = [];
-
-const imgSliderElem = document.getElementsByClassName('slide')[0];
-const pElem = document.getElementsByClassName('slideDescription')[0];
-const h6Elem = document.getElementsByClassName('author')[0];
+const slideContainer = document.getElementsByClassName('slideContainer')[0];
+const slideInformationContainer = document.getElementsByClassName('slideInformationContainer')[0];
 const slidesControllerContainer = document.getElementsByClassName('slidesControllerContainer')[0];
 
 const testimonials = document.getElementById('testimonials');
 
 
+let j = 0;
 
-let i = 0;
+
 fetch('./data/slider.json')
 .then(response => response.json())
 .then(slides => {
    slides.forEach(slide => {
-       dataSlides.push(slide);
-
-
-       createSlideControllerElem();
-       setSlide(1);
+       addFullSlide(slide);
    })
 }).catch(console.error);
 
 
-function createSlideControllerElem() {
+function addFullSlide (slide) {
+    addSlideImage(slide);
+    addSlideDescription(slide);
+    addSlideAuthor(slide);
+    addSlideControllerElem();
+}
+
+function addSlideImage (slide) {
+    const slideImage = new Image();
+    slideImage.classList.add('slide');
+    slideImage.src = slide.href;
+    slideImage.onerror = () => {
+        slideImage.src = noneSlide;
+    };
+    slideImage.alt = 'slide';
+    slideImage.setAttribute('numSlide', `${j++}`);
+
+    slideContainer.appendChild(slideImage);
+}
+
+function addSlideDescription (slide) {
+    const slideDescription = document.createElement('p');
+    slideDescription.classList.add('slideDescription');
+    slideDescription.innerText = slide.description || '';
+
+    slideDescription.setAttribute('numSlide', `${j}`);
+
+    slideInformationContainer.appendChild(slideDescription);
+
+}
+
+function addSlideAuthor (slide) {
+    const slideAuthor = document.createElement('h6');
+    slideAuthor.classList.add('author');
+    slideAuthor.innerText = slide.name || '';
+    slideAuthor.setAttribute('numSlide', `${j}`);
+
+    slideInformationContainer.appendChild(slideAuthor);
+}
+
+
+
+
+function addSlideControllerElem() {
     const slideController = document.createElement('div');
     slideController.classList.add('slideController');
-    slideController.setAttribute('numSlide', `${i++}`);
+    slideController.setAttribute('numSlide', `${j}`);
     slidesControllerContainer.appendChild(slideController);
 
-    onSlideControllerClick();
+    /*onSlideControllerClick();*/
 }
 
 function onSlideControllerClick() {
@@ -45,6 +82,14 @@ function onSlideControllerClick() {
     }
 }
 
+function setSlide(num) {
+    num--;
+
+    const oldSlide = document.getElementsByClassName('activeSlide');
+    const newSlide = document.querySelectorAll(`numSlide="${num}"`)
+}
+
+/*
 function setSlide(num) {
 
     num--;
@@ -68,6 +113,7 @@ function setSlide(num) {
     }
 
 }
+*/
 
 
 let isStarted = false;
